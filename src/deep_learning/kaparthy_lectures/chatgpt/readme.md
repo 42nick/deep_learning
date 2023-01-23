@@ -1,0 +1,1 @@
+All credits go to Andrej Karpathy; inspired by https://github.com/karpathy/ng-video-lecture and https://github.com/karpathy/nanoGPT

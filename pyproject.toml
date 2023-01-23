@@ -1,0 +1,77 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "deep_learning"
+version = "0.0.1"
+readme = "README.md"
+requires-python = ">=3.7"
+license = { text = "MIT License" }
+dependencies = ["torch", "numpy"]
+[project.optional-dependencies]
+dev = ["deep_learning[test]", "deep_learning[docs]", "tox"]
+test = ["pytest", "pytest-cov", "coverage", "black", "isort", "pylint"]
+docs = ["sphinx", "myst-parser", "sphinx_better_theme"]
+
+[tool.setuptools.packages.find]
+where = ["src"] # list of folders that contain the packages (["."] by default)
+include = [
+  "deep_learning*",
+] # package names should match these glob patterns (["*"] by default)
+exclude = [
+  "my_package.tests*",
+] # exclude packages matching these glob patterns (empty by default)
+namespaces = false # to disable scanning PEP 420 namespaces (true by default)
+
+[tools.isort]
+skip = [".gitignore", ".dockerignore"]
+skip_glob = ["docs/*"]
+profile = "black"
+line_length = 120
+
+[tool.black]
+line_length = 120
+exclude = '''
+(
+  /(
+      \.eggs
+    | \.git
+    | \.pytest_cache
+    | \.mypy_cache
+    | \.venv
+    | \.tox
+    | venv
+    | dist
+  )/
+)
+'''
+
+[tool.pylint.messages_control]
+max-line-length = 120
+disable = """
+    missing-function-docstring,
+    missing-module-docstring
+    """
+# generated-members = """
+#     torch.*
+#     numpy.*
+#     """
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-v --cov=deep_learning --cov-branch --cov-report html:reports/html --cov-report=term-missing"
+
+[tool.coverage.report]
+exclude_lines = [
+  "pragma: no cover",
+  "raise AssertionError",
+  "def __repr__",
+  "def __str__",
+  "if __name__ == .__main__.:",
+  "raise NotImplementedError",
+]
+
+[tool.coverage.run]
+branch = true
+data_file = "reports/.coverage"
