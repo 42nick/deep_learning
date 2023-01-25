@@ -57,6 +57,7 @@ class Trainer:
         eval_iters: int,
         train_iters: int,
         device: str = "cuda",
+        lr: float = 1e-3,
     ) -> None:
         super().__init__()
 
@@ -65,9 +66,10 @@ class Trainer:
         self.eval_iters = eval_iters
         self.eval_interval = eval_interval
         self.train_iters = train_iters
-        self.optimizer = torch.optim.AdamW(self.model.parameters(), lr=1e-3)
+        self.optimizer = torch.optim.AdamW(self.model.parameters(), lr=lr)
         self.device = device
 
+        # move model to device
         self.model.to(self.device)
 
     @torch.no_grad()
@@ -96,23 +98,41 @@ class Trainer:
             self.train_iteration()
             if k % self.eval_interval == 0:
                 loss = self.estimate_loss()
-                print(f"train loss: {loss['train']:.3f}, val loss: {loss['val']:.3f}")
+                # print(f"train loss: {loss['train']:.3f}, val loss: {loss['val']:.3f}")
+                print(f"step {k}: train loss {loss['train']:.4f}, val loss {loss['val']:.4f}")
 
 
 def main(
-    batch_size: int = 64,
+    batch_size: int = 32,
     block_size: int = 8,
-    device: str = "gpu",
+    device: str = "cuda",
     eval_iters: int = 300,
     train_iters: int = 6000,
     eval_interval: int = 300,
     additional_predicted_chars: int = 400,
+    lr: float = 1e-3,
+    # Transformer relevant
+    n_embeddings: int = 32,
+    head_size: int = 16,
+    num_heads=4,
 ):
     dhandler = DataHandler(load_data(), batch_size=batch_size, block_size=block_size, device=device)
-    model = BiagramLanguageModel(vocab_size=dhandler.vocab_size)
+    model = BiagramLanguageModel(
+        vocab_size=dhandler.vocab_size,
+        n_embeddings=n_embeddings,
+        block_size=block_size,
+        head_size=head_size,
+        num_heads=num_heads,
+    )
 
     trainer = Trainer(
-        model, dhandler, eval_iters=eval_iters, train_iters=train_iters, eval_interval=eval_interval, device=device
+        model,
+        dhandler,
+        eval_iters=eval_iters,
+        train_iters=train_iters,
+        eval_interval=eval_interval,
+        device=device,
+        lr=lr,
     )
     trainer.train()
 

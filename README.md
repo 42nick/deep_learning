@@ -11,3 +11,6 @@ sphinx-build -b html docs/source docs/build
 
 [Documentation](./docs/source/index.rst)
 
+Credits go to: 
+https://github.com/karpathy/ng-video-lecture
+https://github.com/karpathy/nanoGPT
