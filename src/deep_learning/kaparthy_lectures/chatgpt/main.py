@@ -115,6 +115,7 @@ def main(
     n_embeddings: int = 32,
     head_size: int = 16,
     num_heads=4,
+    n_layer=3,
 ):
     dhandler = DataHandler(load_data(), batch_size=batch_size, block_size=block_size, device=device)
     model = BiagramLanguageModel(
@@ -123,6 +124,7 @@ def main(
         block_size=block_size,
         head_size=head_size,
         num_heads=num_heads,
+        n_layer=n_layer,
     )
 
     trainer = Trainer(
@@ -145,4 +147,16 @@ def main(
 
 
 if __name__ == "__main__":
-    main()
+    # main()
+    main(
+        batch_size=64,
+        block_size=256,
+        lr=3e-4,
+        n_embeddings=384,
+        num_heads=6,
+        n_layer=6,
+        eval_iters=500,
+        train_iters=5000,
+        eval_interval=200,
+        additional_predicted_chars=10000,
+    )
