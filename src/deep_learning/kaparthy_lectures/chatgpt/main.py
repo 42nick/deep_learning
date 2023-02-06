@@ -158,5 +158,6 @@ if __name__ == "__main__":
         eval_iters=500,
         train_iters=5000,
         eval_interval=200,
-        additional_predicted_chars=10000,
+        additional_predicted_chars=1000
+        0,
     )
