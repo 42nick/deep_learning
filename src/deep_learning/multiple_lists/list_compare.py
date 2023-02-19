@@ -1,9 +1,11 @@
+import os
 from timeit import timeit
 
 import numpy as np
+import psutil
 import torch
 
-N_ELEMENTS = 10000
+N_ELEMENTS = 100000000
 
 
 def mutliple_for_loops():
@@ -35,6 +37,7 @@ def mutliple_for_loops():
     torch.cuda.synchronize()
 
     print(start.elapsed_time(end))  # milliseconds
+    print(psutil.Process(os.getpid()).memory_info().rss / 1024**2)
 
 
 def single_for_loop():
@@ -61,11 +64,12 @@ def single_for_loop():
     torch.cuda.synchronize()
 
     print(start.elapsed_time(end))  # milliseconds
+    print(psutil.Process(os.getpid()).memory_info().rss / 1024**2)
 
 
 def main():
-    print("adsfsdf", timeit(mutliple_for_loops, number=1))
-    print("a", timeit(mutliple_for_loops, number=1))
+    # print("adsfsdf", timeit(mutliple_for_loops, number=1))
+    # print("a", timeit(mutliple_for_loops, number=1))
     print("a", timeit(single_for_loop, number=1))
 
 
