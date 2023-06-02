@@ -8,7 +8,7 @@ version = "0.0.1"
 readme = "README.md"
 requires-python = ">=3.7"
 license = { text = "MIT License" }
-dependencies = ["torch", "numpy", "psutil", "matplotlib", "graphviz"]
+dependencies = ["torch", "numpy", "psutil", "matplotlib", "graphviz", "opencv-python", "Pillow"]
 [project.optional-dependencies]
 dev = ["deep_learning[test]", "deep_learning[docs]", "tox"]
 test = ["pytest", "pytest-cov", "coverage", "black", "isort", "pylint"]
